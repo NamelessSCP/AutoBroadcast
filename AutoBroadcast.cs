@@ -39,7 +39,6 @@
           public void UnregisterEvents()
           {
                Exiled.Events.Handlers.Server.RoundStarted -= eventHandler.OnRoundStart;
-               Timing.KillCoroutines();
                eventHandler = null;
           }
      }

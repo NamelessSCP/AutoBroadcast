@@ -13,20 +13,23 @@ namespace AutoBroadcastSystem.Events
         {
             foreach(KeyValuePair<int, BroadcastSystem> autoBroadcast in config.Broadcasts)
             {
-                Timing.RunCoroutine((IEnumerator<float>)Time(autoBroadcast.Key, autoBroadcast.Value));
+                // Timing.RunCoroutine((IEnumerator<float>)Time(autoBroadcast.Key, autoBroadcast.Value));
+                Timing.CallDelayed(autoBroadcast.Key, () => { 
+                    if(Round.IsStarted) Map.Broadcast(autoBroadcast.Value.Duration, autoBroadcast.Value.BroadcastMessage);
+                });
             }
         }
-        IEnumerable<float> Time(int key, BroadcastSystem broadcast)
-        {
-            while(Round.IsStarted)
-            {
-                if((int)Round.ElapsedTime.TotalSeconds == key)
-                {
-                    Map.Broadcast(broadcast.Duration, broadcast.BroadcastMessage);
-                    yield break;
-                }
-                yield return Timing.WaitForSeconds(1f);
-            }
-        }
+        // IEnumerable<float> Time(int key, BroadcastSystem broadcast)
+        // {
+        //     while(Round.IsStarted)
+        //     {
+        //         if((int)Round.ElapsedTime.TotalSeconds == key)
+        //         {
+        //             Map.Broadcast(broadcast.Duration, broadcast.BroadcastMessage);
+        //             yield break;
+        //         }
+        //         yield return Timing.WaitForSeconds(1f);
+        //     }
+        // }
     }
 }
