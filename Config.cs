@@ -26,6 +26,23 @@ namespace AutoBroadcastSystem
                     }
                }
           };
+          public Dictionary<int, BroadcastSystem> Intervals { get; set; } = new Dictionary<int, BroadcastSystem>
+          {
+               {
+                    15, new BroadcastSystem
+                    {
+                         Duration = 3,
+                         BroadcastMessage = "Every 15 seconds!"
+                    }
+               },
+               {
+                    120, new BroadcastSystem
+                    {
+                         Duration = 4,
+                         BroadcastMessage = "Every 120 seconds!"
+                    }
+               }
+          };
      }
      public class BroadcastSystem
      {

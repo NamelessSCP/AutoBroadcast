@@ -32,13 +32,16 @@
           public void RegisterEvents()
           {
                eventHandler = new Handler();
+               Exiled.Events.Handlers.Server.WaitingForPlayers += eventHandler.OnWaiting;
                Exiled.Events.Handlers.Server.RoundStarted += eventHandler.OnRoundStart;
 
                Log.Debug("Events have been registered!");
           }
           public void UnregisterEvents()
           {
+               Exiled.Events.Handlers.Server.WaitingForPlayers -= eventHandler.OnWaiting;
                Exiled.Events.Handlers.Server.RoundStarted -= eventHandler.OnRoundStart;
+               Timing.KillCoroutines();
                eventHandler = null;
           }
      }
