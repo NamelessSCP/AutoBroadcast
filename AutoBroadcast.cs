@@ -34,6 +34,7 @@
                eventHandler = new Handler();
                Exiled.Events.Handlers.Server.WaitingForPlayers += eventHandler.OnWaiting;
                Exiled.Events.Handlers.Server.RoundStarted += eventHandler.OnRoundStart;
+               Exiled.Events.Handlers.Player.Joined += eventHandler.OnJoin;
 
                Log.Debug("Events have been registered!");
           }
@@ -41,6 +42,8 @@
           {
                Exiled.Events.Handlers.Server.WaitingForPlayers -= eventHandler.OnWaiting;
                Exiled.Events.Handlers.Server.RoundStarted -= eventHandler.OnRoundStart;
+               Exiled.Events.Handlers.Player.Joined -= eventHandler.OnJoin;
+               
                Timing.KillCoroutines();
                eventHandler = null;
           }

@@ -26,6 +26,14 @@ namespace AutoBroadcastSystem.Events
         {
             Timing.KillCoroutines();
         }
+        public void OnJoin(JoinedEventArgs ev)
+        {
+            string message = config.JoinMessage.BroadcastMessage.Replace("%name%", ev.Player.Nickname);
+            if(message.Length > 0)
+            {
+                ev.Player.Broadcast(config.JoinMessage.Duration, message);
+            };
+        }
         IEnumerator<float> Interval(int interval, BroadcastSystem broadcast)
         {
             while(Round.IsStarted)

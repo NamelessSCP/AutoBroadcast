@@ -9,6 +9,11 @@ namespace AutoBroadcastSystem
      {
           public bool IsEnabled { get; set; } = true;
           public bool Debug { get; set; } = false;
+          public BroadcastSystem JoinMessage = new()
+          {
+               Duration = 4,
+               BroadcastMessage = "Welcome, %name%!"
+          };
           public Dictionary<int, BroadcastSystem> Broadcasts { get; set; } = new Dictionary<int, BroadcastSystem>
           {
                {
