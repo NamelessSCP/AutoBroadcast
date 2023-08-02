@@ -1,6 +1,7 @@
 namespace AutoBroadcastSystem.Events
 {
     using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Server;
     using Exiled.API.Enums;
     using PlayerRoles;
     using AutoBroadcastSystem;
@@ -28,11 +29,19 @@ namespace AutoBroadcastSystem.Events
         }
         public void OnJoin(JoinedEventArgs ev)
         {
-            string message = config.JoinMessage.BroadcastMessage.Replace("%name%", ev.Player.Nickname);
-            if(message.Length > 0)
+            if(config.JoinMessage.BroadcastMessage.Length > 0)
             {
+                string message = config.JoinMessage.BroadcastMessage.Replace("%name%", ev.Player.Nickname);
                 ev.Player.Broadcast(config.JoinMessage.Duration, message);
             };
+        }
+        public void OnRespawningTeam(RespawningTeamEventArgs ev)
+        {
+            if (ev.NextKnownTeam == Respawning.SpawnableTeamType.ChaosInsurgency)
+            {
+                Map.Broadcast(config.ChaosAnnouncement.Duration, config.ChaosAnnouncement.BroadcastMessage);
+                Cassie.Message(config.ChaosAnnouncement.CassieMessage, default, default, config.ChaosAnnouncement.ShowSubtitles);
+            }
         }
         IEnumerator<float> Interval(int interval, BroadcastSystem broadcast)
         {

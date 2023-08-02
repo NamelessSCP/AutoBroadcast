@@ -2,6 +2,7 @@ using Exiled.API.Interfaces;
 using Exiled.API.Enums;
 using PlayerRoles;
 using System.ComponentModel;
+using Exiled.API.Features;
 
 namespace AutoBroadcastSystem
 {
@@ -13,6 +14,11 @@ namespace AutoBroadcastSystem
           {
                Duration = 4,
                BroadcastMessage = "Welcome, %name%!"
+          };
+          public CassieBroadcastSystem ChaosAnnouncement { get; set; } = new()
+          {
+               CassieMessage = "Warning . Military personnel designated Chaos Insurgency has entered the facility",
+               ShowSubtitles = false
           };
           public Dictionary<int, BroadcastSystem> Broadcasts { get; set; } = new Dictionary<int, BroadcastSystem>
           {
@@ -55,5 +61,16 @@ namespace AutoBroadcastSystem
           public ushort Duration { get; set; }
           [Description("The message shown on the broadcast")]
           public string BroadcastMessage { get; set; }
+     }
+     public class CassieBroadcastSystem
+     {
+          [Description("How long the hint/broadcast should show")]
+          public ushort Duration { get; set; }
+          [Description("The message shown on the broadcast")]
+          public string BroadcastMessage { get; set; }
+          [Description("The CASSIE message to be sent")]
+          public string CassieMessage { get; set; }
+          [Description("Whether or not to hide the subtitle for the cassie message")]
+          public bool ShowSubtitles { get; set; }
      }
 }
