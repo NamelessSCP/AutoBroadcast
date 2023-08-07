@@ -1,8 +1,5 @@
 using Exiled.API.Interfaces;
-using Exiled.API.Enums;
-using PlayerRoles;
 using System.ComponentModel;
-using Exiled.API.Features;
 
 namespace AutoBroadcastSystem
 {
@@ -10,7 +7,7 @@ namespace AutoBroadcastSystem
      {
           public bool IsEnabled { get; set; } = true;
           public bool Debug { get; set; } = false;
-          public BroadcastSystem JoinMessage = new()
+          public BroadcastSystem JoinMessage { get; set; } = new()
           {
                Duration = 4,
                BroadcastMessage = "Welcome, %name%!"

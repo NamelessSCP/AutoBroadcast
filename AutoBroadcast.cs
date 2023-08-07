@@ -35,7 +35,7 @@
                Exiled.Events.Handlers.Server.WaitingForPlayers += eventHandler.OnWaiting;
                Exiled.Events.Handlers.Server.RoundStarted += eventHandler.OnRoundStart;
                Exiled.Events.Handlers.Server.RespawningTeam += eventHandler.OnRespawningTeam;
-               Exiled.Events.Handlers.Player.Joined += eventHandler.OnJoin;
+               Exiled.Events.Handlers.Player.Verified += eventHandler.OnVerified;
 
                Log.Debug("Events have been registered!");
           }
@@ -44,12 +44,10 @@
                Exiled.Events.Handlers.Server.WaitingForPlayers -= eventHandler.OnWaiting;
                Exiled.Events.Handlers.Server.RoundStarted -= eventHandler.OnRoundStart;
                Exiled.Events.Handlers.Server.RespawningTeam -= eventHandler.OnRespawningTeam;
-               Exiled.Events.Handlers.Player.Joined -= eventHandler.OnJoin;
+               Exiled.Events.Handlers.Player.Verified -= eventHandler.OnVerified;
 
                Timing.KillCoroutines();
                eventHandler = null;
           }
      }
 }
-
-// player.TryAddCandy(InventorySystem.Items.Usables.Scp330.CandyKindID.Pink);
