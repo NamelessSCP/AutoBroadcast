@@ -3,11 +3,13 @@ namespace AutoBroadcastSystem.Events
      using Exiled.Events.EventArgs.Player;
      using Exiled.Events.EventArgs.Server;
      using AutoBroadcastSystem;
+     using static AutoBroadcastSystem.CoroutinesHandler;
      using Exiled.API.Features;
      using MEC;
+
      public sealed class Handler
      {
-          Config config = AutoBroadcast.Instance.Config;
+          readonly Config config = AutoBroadcast.Instance.Config;
           public void OnRoundStart()
           {
                if (config.Broadcasts != null)
@@ -24,13 +26,22 @@ namespace AutoBroadcastSystem.Events
                {
                     foreach (KeyValuePair<int, BroadcastSystem> intervalBroadcast in config.Intervals)
                     {
-                         Timing.CallDelayed(intervalBroadcast.Key, () => Timing.RunCoroutine(Interval(intervalBroadcast.Key, intervalBroadcast.Value)));
+                         Timing.CallDelayed(intervalBroadcast.Key, () =>
+                         {
+                              CoroutineHandle coroutine = Timing.RunCoroutine(Interval(intervalBroadcast.Key, intervalBroadcast.Value));
+                              IntervalCoroutines.Add(coroutine);
+                         });
                     };
                }
           }
           public void OnWaiting()
           {
-               Timing.KillCoroutines();
+               if(IntervalCoroutines == null) return;
+               foreach(CoroutineHandle coroutine in IntervalCoroutines)
+               {
+                    IntervalCoroutines.Remove(coroutine);
+                    if(coroutine.IsRunning) Timing.KillCoroutines(coroutine);
+               }
           }
           public void OnVerified(VerifiedEventArgs ev)
           {
