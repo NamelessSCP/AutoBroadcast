@@ -1,3 +1,4 @@
+using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using System.ComponentModel;
 
@@ -7,47 +8,59 @@ namespace AutoBroadcastSystem
      {
           public bool IsEnabled { get; set; } = true;
           public bool Debug { get; set; } = false;
+
           public BroadcastSystem JoinMessage { get; set; } = new()
           {
                Duration = 4,
-               BroadcastMessage = "Welcome, %name%!"
+               Message = "Welcome, %name%!",
+               OverrideBroadcats = false
           };
+
           public CassieBroadcastSystem ChaosAnnouncement { get; set; } = new()
           {
-               CassieMessage = "Warning . Military personnel designated Chaos Insurgency has entered the facility",
-               ShowSubtitles = false
+               Message = "Warning . Military Personnel has entered the facility . Designated as, Chaos Insurgency.",
+               Translation = "Warning. Military Personnel has entered the facility. Designated as, Chaos Insurgency.",
+               ShowSubtitles = false,
           };
+
+          public CassieBroadcastSystem CassieRoundStart { get; set; } = new()
+          {
+               Message = "Containment breach",
+               Translation = "Containment breach!",
+               ShowSubtitles = false,
+          };
+
           public Dictionary<int, BroadcastSystem> Broadcasts { get; set; } = new Dictionary<int, BroadcastSystem>
           {
                {
                     10, new BroadcastSystem
                     {
                          Duration = 5,
-                         BroadcastMessage = "10 seconds have passed!"
+                         Message = "10 seconds have passed!"
                     }
                },
                {
                     60, new BroadcastSystem
                     {
                          Duration = 6,
-                         BroadcastMessage = "60 seconds have passed!"
+                         Message = "60 seconds have passed!"
                     }
                }
           };
-          public Dictionary<int, BroadcastSystem> Intervals { get; set; } = new Dictionary<int, BroadcastSystem>
+          public Dictionary<int, BroadcastSystem> BroadcastIntervals { get; set; } = new Dictionary<int, BroadcastSystem>
           {
                {
                     15, new BroadcastSystem
                     {
                          Duration = 3,
-                         BroadcastMessage = "Every 15 seconds!"
+                         Message = "Every 15 seconds!"
                     }
                },
                {
                     120, new BroadcastSystem
                     {
                          Duration = 4,
-                         BroadcastMessage = "Every 120 seconds!"
+                         Message = "Every 120 seconds!"
                     }
                }
           };
@@ -57,16 +70,16 @@ namespace AutoBroadcastSystem
           [Description("How long the hint/broadcast should show")]
           public ushort Duration { get; set; }
           [Description("The message shown on the broadcast")]
-          public string BroadcastMessage { get; set; }
+          public string Message { get; set; }
+          [Description("Override broadcasts")]
+          public bool OverrideBroadcats { get; set; } = false;
      }
      public class CassieBroadcastSystem
      {
-          [Description("How long the hint/broadcast should show")]
-          public ushort Duration { get; set; }
-          [Description("The message shown on the broadcast")]
-          public string BroadcastMessage { get; set; }
           [Description("The CASSIE message to be sent")]
-          public string CassieMessage { get; set; }
+          public string Message { get; set; }
+          [Description("The text to be shown")]
+          public string Translation { get; set; }
           [Description("Whether or not to hide the subtitle for the cassie message")]
           public bool ShowSubtitles { get; set; }
      }

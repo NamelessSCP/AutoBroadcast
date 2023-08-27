@@ -4,5 +4,5 @@ using MEC;
 
 public static class CoroutinesHandler
 {
-     public static List<CoroutineHandle> IntervalCoroutines;
+     public static List<CoroutineHandle>? IntervalCoroutines;
 }

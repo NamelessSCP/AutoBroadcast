@@ -18,6 +18,7 @@
           {
                Instance = this;
                config = Instance.Config;
+               CoroutinesHandler.IntervalCoroutines = new();
 
                RegisterEvents();
                base.OnEnabled();
@@ -26,6 +27,7 @@
           public override void OnDisabled()
           {
                UnregisterEvents();
+               CoroutinesHandler.IntervalCoroutines = null;
                Instance = null;
                base.OnDisabled();
           }
