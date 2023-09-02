@@ -19,7 +19,7 @@ namespace AutoBroadcastSystem.Events
                     {
                          Timing.CallDelayed(autoBroadcast.Key, () =>
                          {
-                              if (Round.IsStarted) Map.Broadcast(autoBroadcast.Value.Duration, autoBroadcast.Value.Message, default, autoBroadcast.Value.OverrideBroadcats);
+                              if (Round.IsStarted) Map.Broadcast(autoBroadcast.Value.Duration, autoBroadcast.Value.Message, default, autoBroadcast.Value.OverrideBroadcasts);
                          });
                     }
                }
@@ -49,7 +49,7 @@ namespace AutoBroadcastSystem.Events
                if (config.JoinMessage.Duration > 0 && !config.JoinMessage.Message.IsEmpty())
                {
                     string message = config.JoinMessage.Message.Replace("%name%", ev.Player.Nickname);
-                    ev.Player.Broadcast(config.JoinMessage.Duration, message, default, config.JoinMessage.OverrideBroadcats);
+                    ev.Player.Broadcast(config.JoinMessage.Duration, message, default, config.JoinMessage.OverrideBroadcasts);
                };
           }
           public void OnRespawningTeam(RespawningTeamEventArgs ev)
@@ -63,7 +63,7 @@ namespace AutoBroadcastSystem.Events
           {
                while (Round.IsStarted)
                {
-                    Map.Broadcast(broadcast.Duration, broadcast.Message, default, broadcast.OverrideBroadcats);
+                    Map.Broadcast(broadcast.Duration, broadcast.Message, default, broadcast.OverrideBroadcasts);
                     yield return Timing.WaitForSeconds(interval);
                }
           }

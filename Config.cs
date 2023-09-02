@@ -13,7 +13,7 @@ namespace AutoBroadcastSystem
           {
                Duration = 4,
                Message = "Welcome, %name%!",
-               OverrideBroadcats = false
+               OverrideBroadcasts = false
           };
 
           public CassieBroadcastSystem ChaosAnnouncement { get; set; } = new()
@@ -72,7 +72,7 @@ namespace AutoBroadcastSystem
           [Description("The message shown on the broadcast")]
           public string Message { get; set; }
           [Description("Override broadcasts")]
-          public bool OverrideBroadcats { get; set; } = false;
+          public bool OverrideBroadcasts { get; set; } = false;
      }
      public class CassieBroadcastSystem
      {
