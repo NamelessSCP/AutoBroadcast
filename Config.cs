@@ -1,5 +1,6 @@
 using Exiled.API.Features;
 using Exiled.API.Interfaces;
+using PlayerRoles;
 using System.ComponentModel;
 
 namespace AutoBroadcastSystem
@@ -64,13 +65,30 @@ namespace AutoBroadcastSystem
                     }
                }
           };
+          public Dictionary<RoleTypeId, SpawningBroadcasts> SpawnBroadcasts { get; set; } = new()
+          {
+               {
+                    RoleTypeId.Spectator, new()
+                    {
+                         Message = "You died!",
+                         Duration = 4,
+                    }
+               },
+               {
+                    RoleTypeId.Overwatch, new()
+                    {
+                         Message = "Overwatch initiated.",
+                         Duration = 6,
+                    }
+               }
+          };
      }
      public class BroadcastSystem
      {
           [Description("How long the hint/broadcast should show")]
           public ushort Duration { get; set; }
           [Description("The message shown on the broadcast")]
-          public string Message { get; set; }
+          public string Message { get; set; } = "";
           [Description("Override broadcasts")]
           public bool OverrideBroadcasts { get; set; } = false;
      }
@@ -82,5 +100,12 @@ namespace AutoBroadcastSystem
           public string Translation { get; set; }
           [Description("Whether or not to hide the subtitle for the cassie message")]
           public bool ShowSubtitles { get; set; }
+     }
+     public class SpawningBroadcasts
+     {
+          public string Message { get; set; } = "";
+          public ushort Duration { get; set; } = 5;
+          public bool Override { get; set; } = false;
+          public bool UseHints { get; set; } = true;
      }
 }

@@ -59,6 +59,17 @@ namespace AutoBroadcastSystem.Events
                     if(!config.ChaosAnnouncement.Message.IsEmpty()) Cassie.MessageTranslated(config.ChaosAnnouncement.Message, config.ChaosAnnouncement.Translation, default, default, config.ChaosAnnouncement.ShowSubtitles);
                }
           }
+
+          public void OnSpawned(SpawnedEventArgs ev)
+          {
+               if(config.SpawnBroadcasts.ContainsKey(ev.Player.Role.Type))
+               {
+                    SpawningBroadcasts stuff = config.SpawnBroadcasts[ev.Player.Role.Type];
+                    if(stuff.UseHints) ev.Player.ShowHint(stuff.Message, stuff.Duration);
+                    else ev.Player.Broadcast(stuff.Duration, stuff.Message, default, stuff.Override);
+               }
+          }
+
           IEnumerator<float> Interval(int interval, BroadcastSystem broadcast)
           {
                while (Round.IsStarted)

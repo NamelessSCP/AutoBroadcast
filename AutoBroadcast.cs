@@ -38,6 +38,7 @@
                Exiled.Events.Handlers.Server.RoundStarted += eventHandler.OnRoundStart;
                Exiled.Events.Handlers.Server.RespawningTeam += eventHandler.OnRespawningTeam;
                Exiled.Events.Handlers.Player.Verified += eventHandler.OnVerified;
+               Exiled.Events.Handlers.Player.Spawned += eventHandler.OnSpawned;
 
                Log.Debug("Events have been registered!");
           }
@@ -47,6 +48,7 @@
                Exiled.Events.Handlers.Server.RoundStarted -= eventHandler.OnRoundStart;
                Exiled.Events.Handlers.Server.RespawningTeam -= eventHandler.OnRespawningTeam;
                Exiled.Events.Handlers.Player.Verified -= eventHandler.OnVerified;
+               Exiled.Events.Handlers.Player.Spawned -= eventHandler.OnSpawned;
 
                Timing.KillCoroutines();
                eventHandler = null!;
