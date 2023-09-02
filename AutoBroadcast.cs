@@ -28,7 +28,7 @@
           {
                UnregisterEvents();
                CoroutinesHandler.IntervalCoroutines = null;
-               Instance = null;
+               Instance = null!;
                base.OnDisabled();
           }
           public void RegisterEvents()
@@ -49,7 +49,7 @@
                Exiled.Events.Handlers.Player.Verified -= eventHandler.OnVerified;
 
                Timing.KillCoroutines();
-               eventHandler = null;
+               eventHandler = null!;
           }
      }
 }

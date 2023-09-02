@@ -9,7 +9,7 @@
 
 
   <ItemGroup>
-    <PackageReference Include="EXILED" Version="7.2.0" />
+    <PackageReference Include="EXILED" Version="8.0.1" />
     <PackageReference Include="Lib.Harmony" Version="2.2.2" />
     <PackageReference Include="UnityEngine.Modules" Version="2019.4.15" IncludeAssets="compile" />
   </ItemGroup>
