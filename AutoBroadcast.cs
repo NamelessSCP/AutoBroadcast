@@ -3,7 +3,6 @@
      using Exiled.API.Features;
      using Exiled.API.Enums;
      using AutoBroadcastSystem.Events;
-     using MEC;
 
      public class AutoBroadcast : Plugin<Config>
      {
@@ -11,8 +10,8 @@
           public override string Prefix => "AutoBroadcast";
           public override string Author => "@misfiy";
           public override PluginPriority Priority => PluginPriority.Default;
-          public override Version RequiredExiledVersion => new(8, 0, 1);
-          public override Version Version => new(1, 4, 2);
+          public override Version RequiredExiledVersion => new(8, 1, 0);
+          public override Version Version => new(1, 4, 3);
           private Handler eventHandler;
           public static AutoBroadcast Instance;
           private Config config;
@@ -20,7 +19,7 @@
           {
                Instance = this;
                config = Instance.Config;
-               CoroutinesHandler.IntervalCoroutines = new();
+               CoroutinesHandler.Coroutines = new();
 
                RegisterEvents();
                base.OnEnabled();
@@ -28,8 +27,9 @@
 
           public override void OnDisabled()
           {
+               Log.Debug("Disabling plugin..");
                UnregisterEvents();
-               CoroutinesHandler.IntervalCoroutines = null;
+               CoroutinesHandler.KillCoroutines();
                Instance = null!;
                base.OnDisabled();
           }
@@ -52,7 +52,6 @@
                Exiled.Events.Handlers.Player.Verified -= eventHandler.OnVerified;
                Exiled.Events.Handlers.Player.Spawned -= eventHandler.OnSpawned;
 
-               Timing.KillCoroutines();
                eventHandler = null!;
           }
      }
