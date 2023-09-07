@@ -13,9 +13,9 @@ public static class CoroutinesHandler
           foreach(CoroutineHandle coroutine in Coroutines)
           {
                if(coroutine.IsRunning) Timing.KillCoroutines(coroutine);
-               Coroutines.Remove(coroutine);
                Log.Debug("Killed a coroutine successfully!");
           }
+          Coroutines.Clear();
           Log.Debug("Killed all coroutines");
      }
 }
