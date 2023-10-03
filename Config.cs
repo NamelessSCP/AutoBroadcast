@@ -1,111 +1,91 @@
-using Exiled.API.Features;
 using Exiled.API.Interfaces;
 using PlayerRoles;
 using System.ComponentModel;
 
 namespace AutoBroadcastSystem
 {
-     public sealed class Config : IConfig
-     {
-          public bool IsEnabled { get; set; } = true;
-          public bool Debug { get; set; } = false;
+	public sealed class Config : IConfig
+	{
+		public bool IsEnabled { get; set; } = true;
+		public bool Debug { get; set; } = false;
 
-          public BroadcastSystem JoinMessage { get; set; } = new()
-          {
-               Duration = 4,
-               Message = "Welcome, %name%!",
-               OverrideBroadcasts = false
-          };
+		public BroadcastSystem JoinMessage { get; set; } = new()
+		{
+			Duration = 4,
+			Message = "Welcome, %name%!",
+			Override = false
+		};
 
-          public CassieBroadcastSystem ChaosAnnouncement { get; set; } = new()
-          {
-               Message = "Warning . Military Personnel has entered the facility . Designated as, Chaos Insurgency.",
-               Translation = "Warning. Military Personnel has entered the facility. Designated as, Chaos Insurgency.",
-               ShowSubtitles = false,
-          };
+		public BroadCassie ChaosAnnouncement { get; set; } = new()
+		{
+			Cassie = new()
+			{
+				Message = "Warning . Military Personnel has entered the facility . Designated as, Chaos Insurgency.",
+				Translation = "Warning. Military Personnel has entered the facility. Designated as, <color=green>Chaos Insurgency</color>.",
+				ShowSubtitles = false,
+			},
+		};
 
-          public CassieBroadcastSystem CassieRoundStart { get; set; } = new()
-          {
-               Message = "Containment breach",
-               Translation = "Containment breach!",
-               ShowSubtitles = false,
-          };
+		public BroadCassie RoundStart { get; set; } = new()
+		{
+			Broadcast = new()
+			{
+				Message = "Round has started!",
+			},
+			Cassie = new()
+			{
+				Message = "Containment breach detected",
+			}
+		};
 
-          public Dictionary<int, BroadcastSystem> Broadcasts { get; set; } = new Dictionary<int, BroadcastSystem>
-          {
-               {
-                    10, new BroadcastSystem
-                    {
-                         Duration = 5,
-                         Message = "10 seconds have passed!"
-                    }
-               },
-               {
-                    60, new BroadcastSystem
-                    {
-                         Duration = 6,
-                         Message = "60 seconds have passed!"
-                    }
-               }
-          };
-          public Dictionary<int, BroadcastSystem> BroadcastIntervals { get; set; } = new Dictionary<int, BroadcastSystem>
-          {
-               {
-                    15, new BroadcastSystem
-                    {
-                         Duration = 3,
-                         Message = "Every 15 seconds!"
-                    }
-               },
-               {
-                    120, new BroadcastSystem
-                    {
-                         Duration = 4,
-                         Message = "Every 120 seconds!"
-                    }
-               }
-          };
-          public Dictionary<RoleTypeId, SpawningBroadcasts> SpawnBroadcasts { get; set; } = new()
-          {
-               {
-                    RoleTypeId.Spectator, new()
-                    {
-                         Message = "You died!",
-                         Duration = 4,
-                    }
-               },
-               {
-                    RoleTypeId.Overwatch, new()
-                    {
-                         Message = "Overwatch initiated.",
-                         Duration = 6,
-                    }
-               }
-          };
-     }
-     public class BroadcastSystem
-     {
-          [Description("How long the hint/broadcast should show")]
-          public ushort Duration { get; set; }
-          [Description("The message shown on the broadcast")]
-          public string Message { get; set; } = "";
-          [Description("Override broadcasts")]
-          public bool OverrideBroadcasts { get; set; } = false;
-     }
-     public class CassieBroadcastSystem
-     {
-          [Description("The CASSIE message to be sent")]
-          public string Message { get; set; }
-          [Description("The text to be shown")]
-          public string Translation { get; set; }
-          [Description("Whether or not to hide the subtitle for the cassie message")]
-          public bool ShowSubtitles { get; set; }
-     }
-     public class SpawningBroadcasts
-     {
-          public string Message { get; set; } = "";
-          public ushort Duration { get; set; } = 5;
-          public bool Override { get; set; } = false;
-          public bool UseHints { get; set; } = true;
-     }
+		public Dictionary<int, BroadCassie> Broadcasts { get; set; } = new()
+		{
+		  {
+			 60, new()
+			 {
+				Broadcast = new()
+				{
+				    Message = "60 seconds have passed!",
+				}
+			 }
+		  }
+		};
+		public Dictionary<int, BroadCassie> BroadcastIntervals { get; set; } = new()
+		{
+		  {
+			 30, new()
+			 {
+				Broadcast = new()
+				{
+				    Message = "I show every 30 seconds!",
+				    UseHints = true,
+				}
+			 }
+		  },
+	   };
+		public Dictionary<RoleTypeId, BroadCassie> SpawnBroadcasts { get; set; } = new()
+	   {
+		  {
+			 RoleTypeId.Spectator, new()
+			 {
+				Broadcast = new()
+				{
+				    Message = "You died!",
+				    Duration = 5,
+				    UseHints = true,
+				}
+			 }
+		  },
+		  {
+			 RoleTypeId.Overwatch, new()
+			 {
+				Broadcast = new()
+				{
+				    Message = "Overwatch initiated.",
+				    Duration = 6,
+				}
+			 }
+		  }
+	   };
+	}
 }
