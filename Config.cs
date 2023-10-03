@@ -38,7 +38,7 @@ namespace AutoBroadcastSystem
 			}
 		};
 
-		public Dictionary<int, BroadCassie> Broadcasts { get; set; } = new()
+		public Dictionary<int, BroadCassie> Timed { get; set; } = new()
 		{
 		  {
 			 60, new()
@@ -50,7 +50,7 @@ namespace AutoBroadcastSystem
 			 }
 		  }
 		};
-		public Dictionary<int, BroadCassie> BroadcastIntervals { get; set; } = new()
+		public Dictionary<int, BroadCassie> Intervals { get; set; } = new()
 		{
 		  {
 			 30, new()
