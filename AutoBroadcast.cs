@@ -9,7 +9,7 @@
 		public override string Prefix => "AutoBroadcast";
 		public override string Author => "@misfiy";
 		public override Version RequiredExiledVersion => new(8, 2, 1);
-		public override Version Version => new(1, 5, 0);
+		public override Version Version => new(1, 5, 1);
 		private Handler eventHandler;
 		public static AutoBroadcast Instance;
 
@@ -38,6 +38,9 @@
 			Exiled.Events.Handlers.Player.Verified += eventHandler.OnVerified;
 			Exiled.Events.Handlers.Player.Spawned += eventHandler.OnSpawned;
 
+			if(Instance.Config.NtfAnnouncementCassie != "DISABLED" && Instance.Config.NtfAnnouncementCassieNoScps != "DISABLED")
+				Exiled.Events.Handlers.Map.AnnouncingNtfEntrance += eventHandler.OnAnnouncingMtf;
+
 			Log.Debug("Events have been registered!");
 		}
 		public void UnregisterEvents()
@@ -47,6 +50,9 @@
 			Exiled.Events.Handlers.Server.RespawningTeam -= eventHandler.OnRespawningTeam;
 			Exiled.Events.Handlers.Player.Verified -= eventHandler.OnVerified;
 			Exiled.Events.Handlers.Player.Spawned -= eventHandler.OnSpawned;
+
+			if(Instance.Config.NtfAnnouncementCassie != "DISABLED" && Instance.Config.NtfAnnouncementCassieNoScps != "DISABLED")
+				Exiled.Events.Handlers.Map.AnnouncingNtfEntrance -= eventHandler.OnAnnouncingMtf;
 
 			eventHandler = null!;
 		}

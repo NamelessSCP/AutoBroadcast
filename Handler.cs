@@ -3,9 +3,10 @@ namespace AutoBroadcastSystem.Events
 	using Exiled.Events.EventArgs.Player;
 	using Exiled.Events.EventArgs.Server;
 	using AutoBroadcastSystem;
-	using static AutoBroadcastSystem.CoroutinesHandler;
+	using static CoroutinesHandler;
 	using Exiled.API.Features;
 	using MEC;
+	using Exiled.Events.EventArgs.Map;
 
 	public sealed class Handler
 	{
@@ -49,6 +50,31 @@ namespace AutoBroadcastSystem.Events
 				config.ChaosAnnouncement.Cassie?.Send();
 				config.ChaosAnnouncement.Broadcast?.Show();
 			}
+		}
+
+		public void OnAnnouncingMtf(AnnouncingNtfEntranceEventArgs ev)
+		{
+			string cassieMessage = string.Empty;
+			if (ev.ScpsLeft == 0 && AutoBroadcast.Instance.Config.NtfAnnouncementCassieNoScps != "DISABLED")
+			{
+				ev.IsAllowed = false;
+				cassieMessage = AutoBroadcast.Instance.Config.NtfAnnouncementCassieNoScps;
+			}
+			else if (ev.ScpsLeft >= 1 && AutoBroadcast.Instance.Config.NtfAnnouncementCassie != "DISABLED")
+			{
+				ev.IsAllowed = false;
+				cassieMessage = AutoBroadcast.Instance.Config.NtfAnnouncementCassie;
+			}
+
+			cassieMessage = cassieMessage.Replace("%scps%", $"{ev.ScpsLeft} scpsubject");
+
+			if (ev.ScpsLeft > 1)
+				cassieMessage = cassieMessage.Replace("scpsubject", "scpsubjects");
+
+			cassieMessage = cassieMessage.Replace("%designation%", $"nato_{ev.UnitName[0]} {ev.UnitNumber}");
+
+			if (!string.IsNullOrEmpty(cassieMessage))
+				Cassie.Message(cassieMessage);
 		}
 
 		public void OnSpawned(SpawnedEventArgs ev)

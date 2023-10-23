@@ -1,6 +1,5 @@
 using Exiled.API.Interfaces;
 using PlayerRoles;
-using System.ComponentModel;
 
 namespace AutoBroadcastSystem
 {
@@ -25,6 +24,9 @@ namespace AutoBroadcastSystem
 				ShowSubtitles = false,
 			},
 		};
+
+		public string NtfAnnouncementCassieNoScps { get; set; } = "DISABLED";
+		public string NtfAnnouncementCassie { get; set; } = "DISABLED";
 
 		public BroadCassie RoundStart { get; set; } = new()
 		{
