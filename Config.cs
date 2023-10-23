@@ -40,7 +40,7 @@ namespace AutoBroadcastSystem
 			}
 		};
 
-		public Dictionary<int, BroadCassie> Timed { get; set; } = new()
+		public Dictionary<int, BroadCassie> Delayed { get; set; } = new()
 		{
 		  {
 			 60, new()

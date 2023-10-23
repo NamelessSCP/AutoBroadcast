@@ -17,7 +17,7 @@ namespace AutoBroadcastSystem.Events
 			config.RoundStart.Broadcast?.Show();
 			config.RoundStart.Cassie?.Send();
 
-			foreach (var kvp in config.Timed)
+			foreach (var kvp in config.Delayed)
 			{
 				Coroutines.Add(Timing.CallDelayed(kvp.Key, delegate
 				{
