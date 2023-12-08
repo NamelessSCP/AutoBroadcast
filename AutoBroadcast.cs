@@ -8,8 +8,8 @@
 		public override string Name => "AutoBroadcast";
 		public override string Prefix => "AutoBroadcast";
 		public override string Author => "@misfiy";
-		public override Version RequiredExiledVersion => new(8, 2, 1);
-		public override Version Version => new(1, 5, 1);
+		public override Version RequiredExiledVersion => new(8, 4, 3);
+		public override Version Version => new(1, 5, 2);
 		private Handler eventHandler { get; set; } = null!;
 		public static AutoBroadcast Instance { get; set; } = null!;
 
