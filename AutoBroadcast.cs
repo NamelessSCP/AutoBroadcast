@@ -10,8 +10,8 @@
 		public override string Author => "@misfiy";
 		public override Version RequiredExiledVersion => new(8, 2, 1);
 		public override Version Version => new(1, 5, 1);
-		private Handler eventHandler;
-		public static AutoBroadcast Instance;
+		private Handler eventHandler { get; set; } = null!;
+		public static AutoBroadcast Instance { get; set; } = null!;
 
 		public override void OnEnabled()
 		{

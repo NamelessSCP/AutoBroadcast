@@ -14,8 +14,8 @@ namespace AutoBroadcastSystem.Events
 
 		public void OnRoundStart()
 		{
-			config.RoundStart.Broadcast?.Show();
-			config.RoundStart.Cassie?.Send();
+			config.RoundStart?.Broadcast?.Show();
+			config.RoundStart?.Cassie?.Send();
 
 			foreach (var kvp in config.Delayed)
 			{
@@ -36,7 +36,7 @@ namespace AutoBroadcastSystem.Events
 
 		public void OnVerified(VerifiedEventArgs ev)
 		{
-			if (config.JoinMessage.Duration > 0 && !config.JoinMessage.Message.IsEmpty())
+			if (config.JoinMessage != null && config.JoinMessage.Duration > 0 && !config.JoinMessage.Message.IsEmpty())
 			{
 				string message = config.JoinMessage.Message.Replace("%name%", ev.Player.Nickname);
 				ev.Player.Broadcast(config.JoinMessage.Duration, message, default, config.JoinMessage.Override);
@@ -47,8 +47,8 @@ namespace AutoBroadcastSystem.Events
 		{
 			if (ev.NextKnownTeam == Respawning.SpawnableTeamType.ChaosInsurgency)
 			{
-				config.ChaosAnnouncement.Cassie?.Send();
-				config.ChaosAnnouncement.Broadcast?.Show();
+				config.ChaosAnnouncement?.Cassie?.Send();
+				config.ChaosAnnouncement?.Broadcast?.Show();
 			}
 		}
 

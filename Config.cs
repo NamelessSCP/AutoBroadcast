@@ -8,14 +8,14 @@ namespace AutoBroadcastSystem
 		public bool IsEnabled { get; set; } = true;
 		public bool Debug { get; set; } = false;
 
-		public BroadcastSystem JoinMessage { get; set; } = new()
+		public BroadcastSystem? JoinMessage { get; set; } = new()
 		{
 			Duration = 4,
 			Message = "Welcome, %name%!",
 			Override = false
 		};
 
-		public BroadCassie ChaosAnnouncement { get; set; } = new()
+		public BroadCassie? ChaosAnnouncement { get; set; } = new()
 		{
 			Cassie = new()
 			{
@@ -28,7 +28,7 @@ namespace AutoBroadcastSystem
 		public string NtfAnnouncementCassieNoScps { get; set; } = "DISABLED";
 		public string NtfAnnouncementCassie { get; set; } = "DISABLED";
 
-		public BroadCassie RoundStart { get; set; } = new()
+		public BroadCassie? RoundStart { get; set; } = new()
 		{
 			Broadcast = new()
 			{
