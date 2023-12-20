@@ -1,4 +1,7 @@
 # AutoBroadcast ![Downloads](https://img.shields.io/github/downloads/Misfiy/AutoBroadcast/total)
+* An EXILED plugin which allows server owners to have automatic broadcasts on certain actions
+
+# Features
 * Welcome message
 * Chaos announcement
 * Change ntf announcement
