@@ -1,7 +1,7 @@
-namespace AutoBroadcastSystem;
-
 using Exiled.API.Interfaces;
 using PlayerRoles;
+
+namespace AutoBroadcastSystem;
 
 public class Config : IConfig
 {

@@ -1,11 +1,10 @@
-namespace AutoBroadcastSystem.Events;
-
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
-using AutoBroadcastSystem;
 using Exiled.API.Features;
 using MEC;
 using Exiled.Events.EventArgs.Map;
+
+namespace AutoBroadcastSystem.Events;
 
 public class Handler
 {
@@ -13,6 +12,30 @@ public class Handler
 		
 	private static readonly Config config = AutoBroadcast.Instance.Config;
 
+	public Handler()
+	{
+		Exiled.Events.Handlers.Server.RoundEnded += OnRoundEnded;
+		Exiled.Events.Handlers.Server.RoundStarted += OnRoundStart;
+		Exiled.Events.Handlers.Server.RespawningTeam += OnRespawningTeam;
+		Exiled.Events.Handlers.Player.Verified += OnVerified;
+		Exiled.Events.Handlers.Player.Spawned += OnSpawned;
+
+		if(AutoBroadcast.Instance.Config.NtfAnnouncementCassie != "DISABLED" && AutoBroadcast.Instance.Config.NtfAnnouncementCassieNoScps != "DISABLED")
+			Exiled.Events.Handlers.Map.AnnouncingNtfEntrance += OnAnnouncingNtf;
+	}
+
+	~Handler()
+	{
+		Exiled.Events.Handlers.Server.RoundEnded -= OnRoundEnded;
+		Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStart;
+		Exiled.Events.Handlers.Server.RespawningTeam -= OnRespawningTeam;
+		Exiled.Events.Handlers.Player.Verified -= OnVerified;
+		Exiled.Events.Handlers.Player.Spawned -= OnSpawned;
+
+		if(AutoBroadcast.Instance.Config.NtfAnnouncementCassie != "DISABLED" || AutoBroadcast.Instance.Config.NtfAnnouncementCassieNoScps != "DISABLED")
+			Exiled.Events.Handlers.Map.AnnouncingNtfEntrance -= OnAnnouncingNtf;
+	}
+	
 	public void OnRoundStart()
 	{
 		Log.Debug("Round started");
