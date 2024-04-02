@@ -24,6 +24,7 @@ chaos_announcement: null
 ntf_announcement_cassie_no_scps: 'DISABLED'
 ntf_announcement_cassie: 'DISABLED'
 round_start: null
+last_player_on_team: null
 timed: {}
 intervals: {}
 spawn_broadcasts: {}

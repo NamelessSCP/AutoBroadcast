@@ -39,6 +39,18 @@ public class Config : IConfig
 			Message = "Containment breach detected",
 		}
 	};
+	
+	public BroadCassie? LastPlayerOnTeam { get; set; } = new()
+	{
+		Broadcast = new()
+		{
+			Message = "You are the last remaining on your team!",
+		},
+		Cassie = new()
+		{
+			Message = "There is 1 {role} remaining!"
+		}
+	};
 
 	public Dictionary<int, BroadCassie> Delayed { get; set; } = new()
 	{
