@@ -10,14 +10,19 @@
 
 
 	<ItemGroup>
-		<PackageReference Include="EXILED" Version="8.4.3" />
+		<PackageReference Include="EXILED" Version="8.8.0" />
 		<PackageReference Include="Lib.Harmony" Version="2.2.2" />
-		<PackageReference Include="UnityEngine.Modules" Version="2019.4.15" IncludeAssets="compile" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="Assembly-CSharp-firstpass" HintPath="$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll"/>
-		<Reference Include="Mirror" HintPath="$(EXILED_REFERENCES)\Mirror.dll"/>
+		<Reference Include="Assembly-CSharp-firstpass" HintPath="$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll" />
+		<Reference Include="Mirror" HintPath="$(EXILED_REFERENCES)\Mirror.dll" />
+		<Reference Include="UnityEngine.CoreModule">
+		  <HintPath>..\..\EXILED References\Master\UnityEngine.CoreModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.PhysicsModule">
+		  <HintPath>..\..\EXILED References\Master\UnityEngine.PhysicsModule.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 
 </Project>

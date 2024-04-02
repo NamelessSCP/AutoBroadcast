@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Features;
+using PlayerRoles;
 using System.ComponentModel;
 
 namespace AutoBroadcastSystem;
@@ -31,10 +32,19 @@ public class BroadcastSystem
 	public void Show(Player player)
 	{
 		if (UseHints)
-				player.ShowHint(Message, Duration);
+			player.ShowHint(Message, Duration);
 		else 
 			player.Broadcast(Duration, Message, default, Override); 
 	}
+
+    // Overload for displaying player role (Last Player Alive)
+    public void Show(RoleTypeId role)
+	{
+        if (UseHints)
+            Map.ShowHint(Message.Replace("{role}", HelperMethods.CassieRoleTranslations(role)), Duration);
+        else
+            Map.Broadcast(Duration, Message.Replace("{role}", HelperMethods.CassieRoleTranslations(role)), default, Override);
+    }
 }
 
 public class CassieBroadcast
@@ -49,8 +59,45 @@ public class CassieBroadcast
 	public void Send()
 	{
 		Cassie.MessageTranslated(
-			Message, 
-			Translation.IsEmpty() ? Message : Translation, 
+			Message,
+			Translation.IsEmpty() ? Message : Translation,
 			isSubtitles: ShowSubtitles);
 	}
+
+    // Overload for displaying player role (Last Player Alive)
+    public void Send(RoleTypeId role)
+	{
+        Cassie.MessageTranslated(
+            Message.Replace("{role}", HelperMethods.CassieRoleTranslations(role)),
+            Translation.IsEmpty() ? Message.Replace("{role}", HelperMethods.CassieRoleTranslations(role)) : Translation.Replace("{role}", HelperMethods.CassieRoleTranslations(role)),
+            isSubtitles: ShowSubtitles);
+    }
+}
+
+public static class HelperMethods
+{
+    public static string CassieRoleTranslations(RoleTypeId role)
+    {
+        switch (role)
+        {
+            case RoleTypeId.ClassD:
+                return "ClassD";
+            case RoleTypeId.Scientist:
+                return "Scientist";
+            case RoleTypeId.FacilityGuard:
+                return "Facility Guard";
+            case RoleTypeId.NtfCaptain:
+            case RoleTypeId.NtfSpecialist:
+            case RoleTypeId.NtfPrivate:
+            case RoleTypeId.NtfSergeant:
+                return "NineTailedFox";
+            case RoleTypeId.ChaosMarauder:
+            case RoleTypeId.ChaosConscript:
+            case RoleTypeId.ChaosRepressor:
+            case RoleTypeId.ChaosRifleman:
+                return "ChaosInsurgency";
+            default: // shouldnt really happen but it's there just in case
+                return "Not found";
+        }
+    }
 }

@@ -3,6 +3,7 @@ using Exiled.Events.EventArgs.Server;
 using Exiled.API.Features;
 using MEC;
 using Exiled.Events.EventArgs.Map;
+using PlayerRoles;
 
 namespace AutoBroadcastSystem.Events;
 
@@ -19,8 +20,9 @@ public class Handler
 		Exiled.Events.Handlers.Server.RespawningTeam += OnRespawningTeam;
 		Exiled.Events.Handlers.Player.Verified += OnVerified;
 		Exiled.Events.Handlers.Player.Spawned += OnSpawned;
+        Exiled.Events.Handlers.Player.Dying += OnDying;
 
-		if(AutoBroadcast.Instance.Config.NtfAnnouncementCassie != "DISABLED" && AutoBroadcast.Instance.Config.NtfAnnouncementCassieNoScps != "DISABLED")
+        if (AutoBroadcast.Instance.Config.NtfAnnouncementCassie != "DISABLED" && AutoBroadcast.Instance.Config.NtfAnnouncementCassieNoScps != "DISABLED")
 			Exiled.Events.Handlers.Map.AnnouncingNtfEntrance += OnAnnouncingNtf;
 	}
 
@@ -31,8 +33,10 @@ public class Handler
 		Exiled.Events.Handlers.Server.RespawningTeam -= OnRespawningTeam;
 		Exiled.Events.Handlers.Player.Verified -= OnVerified;
 		Exiled.Events.Handlers.Player.Spawned -= OnSpawned;
+		Exiled.Events.Handlers.Player.Dying -= OnDying;
 
-		if(AutoBroadcast.Instance.Config.NtfAnnouncementCassie != "DISABLED" || AutoBroadcast.Instance.Config.NtfAnnouncementCassieNoScps != "DISABLED")
+
+        if (AutoBroadcast.Instance.Config.NtfAnnouncementCassie != "DISABLED" || AutoBroadcast.Instance.Config.NtfAnnouncementCassieNoScps != "DISABLED")
 			Exiled.Events.Handlers.Map.AnnouncingNtfEntrance -= OnAnnouncingNtf;
 	}
 	
@@ -129,6 +133,21 @@ public class Handler
 			broadcast.Cassie?.Send();
 		}
 	}
+
+	public void OnDying(DyingEventArgs ev)
+	{
+		// Makes sure the player is not an SCP/other class
+		if (ev.Player.Role.Team != Team.SCPs && ev.Player.Role.Team != Team.OtherAlive)
+		{
+            List<Player> playerTeam = Player.Get(ev.Player.Role.Team).ToList();
+            if (playerTeam.Count - 1 == 1)
+            {
+				Log.Debug($"{ev.Player.Role.Team} has 1 person remaining on their team, starting LastPlayerAlive Broadcast/Cassie");
+                config.LastPlayerOnTeam?.Broadcast?.Show(ev.Player.Role.Type);
+                config.LastPlayerOnTeam?.Cassie?.Send(ev.Player.Role.Type);
+            }
+        }
+    }
 
 	public IEnumerator<float> DoIntervalBroadcast(int interval, BroadCassie message)
 	{
