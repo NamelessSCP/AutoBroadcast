@@ -44,11 +44,11 @@ public class Config : IConfig
 	{
 		Broadcast = new()
 		{
-			Message = "There is one {role} remaining!",
+			Message = "You are the last remaining on your team!",
 		},
 		Cassie = new()
 		{
-			Message = "There is 1 {role} remaining"
+			Message = "There is 1 {role} remaining!"
 		}
 	};
 

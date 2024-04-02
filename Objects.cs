@@ -1,6 +1,8 @@
 ﻿using Exiled.API.Features;
 using PlayerRoles;
 using System.ComponentModel;
+using AutoBroadcastSystem.Events;
+using Exiled.API.Extensions;
 
 namespace AutoBroadcastSystem;
 
@@ -15,11 +17,11 @@ public class BroadcastSystem
 	[Description("How long the hint/broadcast should show")]
 	public ushort Duration { get; set; } = 3;
 	[Description("The message shown on the broadcast")]
-	public string Message { get; set; } = "";
+	public string Message { get; set; } = string.Empty;
 	[Description("Override broadcasts")]
-	public bool Override { get; set; } = false;
+	public bool Override { get; set; }
 	[Description("Whether or not to use hints instead")]
-	public bool UseHints { get; set; } = false;
+	public bool UseHints { get; set; }
 
 	public void Show()
 	{
@@ -36,15 +38,6 @@ public class BroadcastSystem
 		else 
 			player.Broadcast(Duration, Message, default, Override); 
 	}
-
-    // Overload for displaying player role (Last Player Alive)
-    public void Show(RoleTypeId role)
-	{
-        if (UseHints)
-            Map.ShowHint(Message.Replace("{role}", HelperMethods.CassieRoleTranslations(role)), Duration);
-        else
-            Map.Broadcast(Duration, Message.Replace("{role}", HelperMethods.CassieRoleTranslations(role)), default, Override);
-    }
 }
 
 public class CassieBroadcast
@@ -52,52 +45,29 @@ public class CassieBroadcast
 	[Description("The CASSIE message to be sent")]
 	public string Message { get; set; } = "";
 	[Description("The text to be shown")]
-	public string Translation { get; set; } = "";
+	public string Translation { get; set; } = string.Empty;
 	[Description("Whether or not to hide the subtitle for the cassie message")]
 	public bool ShowSubtitles { get; set; } = true;
 
 	public void Send()
 	{
-		Cassie.MessageTranslated(
-			Message,
-			Translation.IsEmpty() ? Message : Translation,
-			isSubtitles: ShowSubtitles);
+		Cassie.MessageTranslated(Message,Translation.IsEmpty() ? Message : Translation, isSubtitles: ShowSubtitles);
 	}
-
-    // Overload for displaying player role (Last Player Alive)
+	
+	public void Send(Player player)
+	{
+		player.MessageTranslated(Message, Translation.IsEmpty() ? Message : Translation, isSubtitles: ShowSubtitles);
+	}
+	
+    /// <summary>
+    /// Sends the CASSIE to all players replacing "{role}" with <paramref name="role"/>'s full name.
+    /// </summary>
+    /// <remarks>Used by <see cref="Handler.OnDied"/></remarks>
     public void Send(RoleTypeId role)
 	{
         Cassie.MessageTranslated(
-            Message.Replace("{role}", HelperMethods.CassieRoleTranslations(role)),
-            Translation.IsEmpty() ? Message.Replace("{role}", HelperMethods.CassieRoleTranslations(role)) : Translation.Replace("{role}", HelperMethods.CassieRoleTranslations(role)),
+            Message.Replace("{role}", role.GetFullName()),
+            Translation.IsEmpty() ? Message.Replace("{role}", role.GetFullName()) : Translation.Replace("{role}", role.GetFullName()),
             isSubtitles: ShowSubtitles);
-    }
-}
-
-public static class HelperMethods
-{
-    public static string CassieRoleTranslations(RoleTypeId role)
-    {
-        switch (role)
-        {
-            case RoleTypeId.ClassD:
-                return "ClassD";
-            case RoleTypeId.Scientist:
-                return "Scientist";
-            case RoleTypeId.FacilityGuard:
-                return "Facility Guard";
-            case RoleTypeId.NtfCaptain:
-            case RoleTypeId.NtfSpecialist:
-            case RoleTypeId.NtfPrivate:
-            case RoleTypeId.NtfSergeant:
-                return "NineTailedFox";
-            case RoleTypeId.ChaosMarauder:
-            case RoleTypeId.ChaosConscript:
-            case RoleTypeId.ChaosRepressor:
-            case RoleTypeId.ChaosRifleman:
-                return "ChaosInsurgency";
-            default: // shouldnt really happen but it's there just in case
-                return "Not found";
-        }
     }
 }
