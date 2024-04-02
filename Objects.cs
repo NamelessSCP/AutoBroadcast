@@ -66,8 +66,8 @@ public class CassieBroadcast
     public void Send(RoleTypeId role)
 	{
         Cassie.MessageTranslated(
-            Message.Replace("{role}", role.GetFullName()),
-            Translation.IsEmpty() ? Message.Replace("{role}", role.GetFullName()) : Translation.Replace("{role}", role.GetFullName()),
+            Message.Replace("{role}", RoleExtensions.GetTeam(role).ToString()),
+            Translation.IsEmpty() ? Message.Replace("{role}", RoleExtensions.GetTeam(role).ToString()) : Translation.Replace("{role}", role.GetFullName()),
             isSubtitles: ShowSubtitles);
     }
 }

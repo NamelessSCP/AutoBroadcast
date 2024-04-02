@@ -135,14 +135,14 @@ public class Handler
 
 	public void OnDied(DiedEventArgs ev)
 	{
-		if (ev.TargetOldRole.GetTeam() is not Team.SCPs and not Team.OtherAlive)
+		if (ev.TargetOldRole.GetTeam() is not Team.SCPs and not Team.OtherAlive and not Team.Dead)
 		{
-            List<Player> playerTeam = Player.Get(ev.Player.Role.Team).ToList();
+            List<Player> playerTeam = Player.Get(ev.TargetOldRole.GetTeam()).ToList();
             if (playerTeam.Count == 1)
             {
 				Log.Debug($"{ev.TargetOldRole.GetTeam()} has 1 person remaining on their team, starting LastPlayerAlive Broadcast/Cassie");
                 config.LastPlayerOnTeam?.Broadcast?.Show(playerTeam.FirstOrDefault());
-                config.LastPlayerOnTeam?.Cassie?.Send(ev.Player.Role.Type);
+                config.LastPlayerOnTeam?.Cassie?.Send(ev.TargetOldRole);
             }
         }
     }
