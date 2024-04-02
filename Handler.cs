@@ -136,6 +136,8 @@ public class Handler
 
 	public void OnDying(DyingEventArgs ev)
 	{
+		if (ev.Player == null) return;
+
 		// Makes sure the player is not an SCP/other class
 		if (ev.Player.Role.Team != Team.SCPs && ev.Player.Role.Team != Team.OtherAlive)
 		{
