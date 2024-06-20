@@ -120,7 +120,7 @@ public class Handler
 		cassieMessage = cassieMessage.Replace("%designation%", $"nato_{ev.UnitName[0]} {ev.UnitNumber}");
 
 		if (!string.IsNullOrEmpty(cassieMessage))
-			Cassie.Message(cassieMessage);
+			Cassie.Message(cassieMessage, isSubtitles: true);
 	}
 
 	public void OnSpawned(SpawnedEventArgs ev)

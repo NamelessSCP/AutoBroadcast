@@ -12,7 +12,7 @@ public class AutoBroadcast : Plugin<Config>
 	public override string Prefix => "AutoBroadcast";
 	public override string Author => "@misfiy";
 	public override Version RequiredExiledVersion => new(8, 8, 0);
-	public override Version Version => new(1, 6, 0);
+	public override Version Version => new(1, 6, 1);
 	public override PluginPriority Priority { get; } = PluginPriority.Last;
 
 	private Handler eventHandler { get; set; } = null!;
