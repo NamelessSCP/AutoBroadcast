@@ -3,7 +3,6 @@
 
 # Features
 * Welcome message
-* Chaos announcement
 * Change ntf announcement
 * Round start
 * Timed/Delayed
@@ -20,7 +19,6 @@
 is_enabled: true
 debug: false
 join_message: null
-chaos_announcement: null
 ntf_announcement_cassie_no_scps: 'DISABLED'
 ntf_announcement_cassie: 'DISABLED'
 round_start: null

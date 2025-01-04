@@ -1,8 +1,7 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
-using AutoBroadcastSystem.Events;
 
-namespace AutoBroadcastSystem;
+namespace AutoBroadcast;
 
 public class AutoBroadcast : Plugin<Config>
 { 
@@ -11,9 +10,9 @@ public class AutoBroadcast : Plugin<Config>
 	public override string Name => "AutoBroadcast";
 	public override string Prefix => "AutoBroadcast";
 	public override string Author => "@misfiy";
-	public override Version RequiredExiledVersion => new(8, 8, 0);
-	public override Version Version => new(1, 6, 2);
-	public override PluginPriority Priority { get; } = PluginPriority.Last;
+	public override Version RequiredExiledVersion => new(9, 2, 1);
+	public override Version Version => new(1, 6, 3);
+	public override PluginPriority Priority => PluginPriority.Last;
 
 	private Handler eventHandler { get; set; } = null!;
 

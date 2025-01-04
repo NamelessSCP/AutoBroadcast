@@ -1,7 +1,7 @@
 using Exiled.API.Interfaces;
 using PlayerRoles;
 
-namespace AutoBroadcastSystem;
+namespace AutoBroadcast;
 
 public class Config : IConfig
 {
@@ -13,16 +13,6 @@ public class Config : IConfig
 		Duration = 4,
 		Message = "Welcome, %name%!",
 		Override = false
-	};
-
-	public BroadCassie? ChaosAnnouncement { get; set; } = new()
-	{
-		Cassie = new()
-		{
-			Message = "Warning . Military Personnel has entered the facility . Designated as, Chaos Insurgency.",
-			Translation = "Warning. Military Personnel has entered the facility. Designated as, <color=green>Chaos Insurgency</color>.",
-			ShowSubtitles = false,
-		},
 	};
 
 	public string NtfAnnouncementCassieNoScps { get; set; } = "DISABLED";

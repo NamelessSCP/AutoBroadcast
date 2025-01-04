@@ -1,10 +1,9 @@
 ﻿using Exiled.API.Features;
 using PlayerRoles;
 using System.ComponentModel;
-using AutoBroadcastSystem.Events;
 using Exiled.API.Extensions;
 
-namespace AutoBroadcastSystem;
+namespace AutoBroadcast;
 
 public class BroadCassie
 {

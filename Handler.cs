@@ -5,19 +5,18 @@ using MEC;
 using Exiled.Events.EventArgs.Map;
 using PlayerRoles;
 
-namespace AutoBroadcastSystem.Events;
+namespace AutoBroadcast;
 
 public class Handler
 {
 	public static List<CoroutineHandle> Coroutines = new();
 		
-	private static readonly Config config = AutoBroadcast.Instance.Config;
+	private static Config config => AutoBroadcast.Instance.Config;
 
 	public Handler()
 	{
 		Exiled.Events.Handlers.Server.RoundEnded += OnRoundEnded;
 		Exiled.Events.Handlers.Server.RoundStarted += OnRoundStart;
-		Exiled.Events.Handlers.Server.RespawningTeam += OnRespawningTeam;
 		Exiled.Events.Handlers.Player.Verified += OnVerified;
 		Exiled.Events.Handlers.Player.Spawned += OnSpawned;
         Exiled.Events.Handlers.Player.Died += OnDied;
@@ -30,7 +29,6 @@ public class Handler
 	{
 		Exiled.Events.Handlers.Server.RoundEnded -= OnRoundEnded;
 		Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStart;
-		Exiled.Events.Handlers.Server.RespawningTeam -= OnRespawningTeam;
 		Exiled.Events.Handlers.Player.Verified -= OnVerified;
 		Exiled.Events.Handlers.Player.Spawned -= OnSpawned;
 		Exiled.Events.Handlers.Player.Died -= OnDied;
@@ -83,16 +81,6 @@ public class Handler
 			string message = config.JoinMessage.Message.Replace("%name%", ev.Player.Nickname);
 			ev.Player.Broadcast(config.JoinMessage.Duration, message, default, config.JoinMessage.Override);
 		};
-	}
-
-	public void OnRespawningTeam(RespawningTeamEventArgs ev)
-	{
-		if (ev.NextKnownTeam == Respawning.SpawnableTeamType.ChaosInsurgency)
-		{
-			Log.Debug("Announcing Chaos Insurgency spawn");
-			config.ChaosAnnouncement?.Cassie?.Send();
-			config.ChaosAnnouncement?.Broadcast?.Show();
-		}
 	}
 
 	public void OnAnnouncingNtf(AnnouncingNtfEntranceEventArgs ev)
