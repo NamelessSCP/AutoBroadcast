@@ -1,34 +1,31 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Features;
+﻿using LabApi.Loader.Features.Plugins;
+using LabApi.Loader.Features.Plugins.Enums;
 
 namespace AutoBroadcast;
 
 public class AutoBroadcast : Plugin<Config>
 { 
-	public static AutoBroadcast Instance { get; set; } = null!;
+	private Handler? _eventHandler;
+
+	public static AutoBroadcast Instance { get; private set; } = null!;
 
 	public override string Name => "AutoBroadcast";
-	public override string Prefix => "AutoBroadcast";
+	public override string Description => "Auto-Broadcast plugin";
+
 	public override string Author => "@misfiy";
-	public override Version RequiredExiledVersion => new(9, 2, 1);
 	public override Version Version => new(1, 6, 3);
-	public override PluginPriority Priority => PluginPriority.Last;
+	public override Version RequiredApiVersion { get; } = new(LabApi.Features.LabApiProperties.CompiledVersion);
+	public override LoadPriority Priority => LoadPriority.Lowest;
 
-	private Handler eventHandler { get; set; } = null!;
-
-	public override void OnEnabled()
+	public override void Enable()
 	{
 		Instance = this;
-		eventHandler = new();
-
-		base.OnEnabled();
+		_eventHandler = new Handler();
 	}
 
-	public override void OnDisabled()
+	public override void Disable()
 	{
-		eventHandler = null!;
+		_eventHandler = null!;
 		Instance = null!;
-
-		base.OnDisabled();
 	}
 }

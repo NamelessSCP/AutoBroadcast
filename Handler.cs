@@ -1,51 +1,54 @@
-using Exiled.Events.EventArgs.Player;
-using Exiled.Events.EventArgs.Server;
-using Exiled.API.Features;
+using AutoBroadcast.Objects;
 using MEC;
-using Exiled.Events.EventArgs.Map;
+using GameCore;
+using LabApi.Events.Arguments.PlayerEvents;
+using LabApi.Events.Arguments.ServerEvents;
+using LabApi.Events.Handlers;
+using LabApi.Features.Console;
+using LabApi.Features.Wrappers;
 using PlayerRoles;
 
 namespace AutoBroadcast;
 
 public class Handler
 {
-	public static List<CoroutineHandle> Coroutines = new();
-		
-	private static Config config => AutoBroadcast.Instance.Config;
+	public static readonly List<CoroutineHandle> Coroutines = new();
+
+	private static Config? Config => AutoBroadcast.Instance.Config;
 
 	public Handler()
 	{
-		Exiled.Events.Handlers.Server.RoundEnded += OnRoundEnded;
-		Exiled.Events.Handlers.Server.RoundStarted += OnRoundStart;
-		Exiled.Events.Handlers.Player.Verified += OnVerified;
-		Exiled.Events.Handlers.Player.Spawned += OnSpawned;
-        Exiled.Events.Handlers.Player.Died += OnDied;
+		ServerEvents.RoundEnded += OnRoundEnded;
+		ServerEvents.RoundStarted += OnRoundStart;
+		PlayerEvents.Joined += OnJoined;
+		PlayerEvents.Spawned += OnSpawned;
+		PlayerEvents.Death += OnDied;
 
-        if (AutoBroadcast.Instance.Config.NtfAnnouncementCassie != "DISABLED" && AutoBroadcast.Instance.Config.NtfAnnouncementCassieNoScps != "DISABLED")
+        if (Config?.NtfAnnouncementCassie != "DISABLED" && Config?.NtfAnnouncementCassieNoScps != "DISABLED")
 			Exiled.Events.Handlers.Map.AnnouncingNtfEntrance += OnAnnouncingNtf;
 	}
 
 	~Handler()
 	{
-		Exiled.Events.Handlers.Server.RoundEnded -= OnRoundEnded;
-		Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStart;
-		Exiled.Events.Handlers.Player.Verified -= OnVerified;
-		Exiled.Events.Handlers.Player.Spawned -= OnSpawned;
-		Exiled.Events.Handlers.Player.Died -= OnDied;
+		ServerEvents.RoundEnded -= OnRoundEnded;
+		ServerEvents.RoundStarted -= OnRoundStart;
+		PlayerEvents.Joined -= OnJoined;
+		PlayerEvents.Spawned -= OnSpawned;
+		PlayerEvents.Death -= OnDied;
 
-        if (AutoBroadcast.Instance.Config.NtfAnnouncementCassie != "DISABLED" || AutoBroadcast.Instance.Config.NtfAnnouncementCassieNoScps != "DISABLED")
+        if (Config?.NtfAnnouncementCassie != "DISABLED" || Config?.NtfAnnouncementCassieNoScps != "DISABLED")
 			Exiled.Events.Handlers.Map.AnnouncingNtfEntrance -= OnAnnouncingNtf;
 	}
 	
 	public void OnRoundStart()
 	{
-		Log.Debug("Round started");
-		config.RoundStart?.Broadcast?.Show();
-		config.RoundStart?.Cassie?.Send();
+		Logger.Debug("Round started");
+		Config?.RoundStart?.Broadcast?.Show();
+		Config?.RoundStart?.Cassie?.Send();
 
-		foreach (KeyValuePair<int, BroadCassie> kvp in config.Delayed)
+		foreach (KeyValuePair<int, BroadCassie> kvp in Config?.Delayed ?? new Dictionary<int, BroadCassie>())
 		{
-			Log.Debug("Running coroutine");
+			Logger.Debug("Running coroutine");
 			Coroutines.Add(Timing.CallDelayed(kvp.Key, delegate
 			{
 				kvp.Value.Broadcast?.Show();
@@ -53,33 +56,33 @@ public class Handler
 			}));
 		}
 
-		foreach (KeyValuePair<int, BroadCassie> kvp in config.Intervals)
+		foreach (KeyValuePair<int, BroadCassie> kvp in Config.Intervals)
 		{
-			Log.Debug("Running coroutine");
+			Logger.Debug("Running coroutine");
 			Coroutines.Add(Timing.RunCoroutine(DoIntervalBroadcast(kvp.Key, kvp.Value)));
 		}
 	}
 
 	public void OnRoundEnded(RoundEndedEventArgs ev)
 	{
-		Log.Debug("Killing coroutines");
+		Logger.Debug("Killing coroutines");
 		foreach(CoroutineHandle coroutine in Coroutines)
 		{
 			Timing.KillCoroutines(coroutine);
-			Log.Debug("Killed a coroutine successfully!");
+			Logger.Debug("Killed a coroutine successfully!");
 		}
 		
 		Coroutines.Clear();
-		Log.Debug("Killed all coroutines");
+		Logger.Debug("Killed all coroutines");
 	}
 
-	public void OnVerified(VerifiedEventArgs ev)
+	public void OnJoined(PlayerJoinedEventArgs ev)
 	{
-		if (config.JoinMessage != null && config.JoinMessage.Duration > 0 && !config.JoinMessage.Message.IsEmpty())
+		if (Config?.JoinMessage != null && Config.JoinMessage.Duration > 0 && !Config.JoinMessage.Message.IsEmpty())
 		{
-			Log.Debug("Showing Verified message to " + ev.Player.Nickname);
-			string message = config.JoinMessage.Message.Replace("%name%", ev.Player.Nickname);
-			ev.Player.Broadcast(config.JoinMessage.Duration, message, default, config.JoinMessage.Override);
+			Logger.Debug("Showing Verified message to " + ev.Player.Nickname);
+			string message = Config.JoinMessage.Message.Replace("%name%", ev.Player.Nickname);
+			Config.JoinMessage.Show(ev.Player);
 		};
 	}
 
@@ -87,15 +90,15 @@ public class Handler
 	{
 		string cassieMessage = string.Empty;
 		
-		if (ev.ScpsLeft == 0 && AutoBroadcast.Instance.Config.NtfAnnouncementCassieNoScps != "DISABLED")
+		if (ev.ScpsLeft == 0 && Config.NtfAnnouncementCassieNoScps != "DISABLED")
 		{
-			Log.Debug("No SCPs cassie");
+			Logger.Debug("No SCPs cassie");
 			ev.IsAllowed = false;
-			cassieMessage = AutoBroadcast.Instance.Config.NtfAnnouncementCassieNoScps;
+			cassieMessage = Config.NtfAnnouncementCassieNoScps;
 		}
-		else if (ev.ScpsLeft >= 1 && AutoBroadcast.Instance.Config.NtfAnnouncementCassie != "DISABLED")
+		else if (ev.ScpsLeft >= 1 && Config.NtfAnnouncementCassie != "DISABLED")
 		{
-			Log.Debug("1 or more SCPs cassie");
+			Logger.Debug("1 or more SCPs cassie");
 			ev.IsAllowed = false;
 			cassieMessage = AutoBroadcast.Instance.Config.NtfAnnouncementCassie;
 		}
@@ -111,33 +114,33 @@ public class Handler
 			Cassie.Message(cassieMessage, isSubtitles: true);
 	}
 
-	public void OnSpawned(SpawnedEventArgs ev)
+	public void OnSpawned(PlayerSpawnedEventArgs ev)
 	{
-		if (config.SpawnBroadcasts.TryGetValue(ev.Player.Role.Type, out BroadCassie broadcast))
+		if (Config.SpawnBroadcasts.TryGetValue(ev.Player.Role, out BroadCassie broadcast))
 		{
-			Log.Debug($"Spawn Broadcast showing for {ev.Player.Role.Type}");
+			Logger.Debug($"Spawn Broadcast showing for {ev.Player.Role}");
 			broadcast.Broadcast?.Show(ev.Player);
 			broadcast.Cassie?.Send();
 		}
 	}
 
-	public void OnDied(DiedEventArgs ev)
+	public void OnDied(PlayerDeathEventArgs ev)
 	{
 		if (ev.TargetOldRole.GetTeam() is not Team.SCPs and not Team.OtherAlive and not Team.Dead)
 		{
             List<Player> playerTeam = Player.Get(ev.TargetOldRole.GetTeam()).ToList();
             if (playerTeam.Count == 1)
             {
-				Log.Debug($"{ev.TargetOldRole.GetTeam()} has 1 person remaining on their team, starting LastPlayerAlive Broadcast/Cassie");
-                config.LastPlayerOnTeam?.Broadcast?.Show(playerTeam.FirstOrDefault());
-                config.LastPlayerOnTeam?.Cassie?.Send(ev.TargetOldRole);
+				Logger.Debug($"{ev.TargetOldRole.GetTeam()} has 1 person remaining on their team, starting LastPlayerAlive Broadcast/Cassie");
+                Config?.LastPlayerOnTeam?.Broadcast?.Show(playerTeam.FirstOrDefault());
+                Config?.LastPlayerOnTeam?.Cassie?.Send(ev.TargetOldRole);
             }
         }
     }
 
 	public IEnumerator<float> DoIntervalBroadcast(int interval, BroadCassie message)
 	{
-		while (Round.IsStarted)
+		while (Round.IsRoundStarted)
 		{
 			yield return Timing.WaitForSeconds(interval);
 

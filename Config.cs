@@ -1,9 +1,9 @@
-using Exiled.API.Interfaces;
+using AutoBroadcast.Objects;
 using PlayerRoles;
 
 namespace AutoBroadcast;
 
-public class Config : IConfig
+public class Config
 {
 	public bool IsEnabled { get; set; } = true;
 	public bool Debug { get; set; } = false;
@@ -20,11 +20,11 @@ public class Config : IConfig
 
 	public BroadCassie? RoundStart { get; set; } = new()
 	{
-		Broadcast = new()
+		Broadcast = new BroadcastSystem
 		{
 			Message = "Round has started!",
 		},
-		Cassie = new()
+		Cassie = new CassieBroadcast
 		{
 			Message = "Containment breach detected",
 		}
@@ -32,11 +32,11 @@ public class Config : IConfig
 	
 	public BroadCassie? LastPlayerOnTeam { get; set; } = new()
 	{
-		Broadcast = new()
+		Broadcast = new BroadcastSystem
 		{
 			Message = "You are the last remaining on your team!",
 		},
-		Cassie = new()
+		Cassie = new CassieBroadcast
 		{
 			Message = "There is 1 {role} remaining!"
 		}
@@ -45,9 +45,9 @@ public class Config : IConfig
 	public Dictionary<int, BroadCassie> Delayed { get; set; } = new()
 	{
 		{
-			60, new()
+			60, new BroadCassie
 			{
-				Broadcast = new()
+				Broadcast = new BroadcastSystem
 				{
 					Message = "60 seconds have passed!",
 				}
@@ -58,9 +58,9 @@ public class Config : IConfig
 	public Dictionary<int, BroadCassie> Intervals { get; set; } = new()
 	{
 		{ 
-			30, new()
+			30, new BroadCassie
 			{
-				Broadcast = new()
+				Broadcast = new BroadcastSystem
 				{
 					Message = "I show every 30 seconds!",
 					UseHints = true,
@@ -72,9 +72,9 @@ public class Config : IConfig
 	public Dictionary<RoleTypeId, BroadCassie> SpawnBroadcasts { get; set; } = new()
 	{ 
 		{
-			RoleTypeId.Spectator, new()
+			RoleTypeId.Spectator, new BroadCassie
 			{
-				Broadcast = new()
+				Broadcast = new BroadcastSystem
 				{
 					Message = "You died!",
 					Duration = 5,
@@ -83,9 +83,9 @@ public class Config : IConfig
 			}
 		},
 		{
-			RoleTypeId.Overwatch, new()
+			RoleTypeId.Overwatch, new BroadCassie
 			{
-				Broadcast = new()
+				Broadcast = new BroadcastSystem
 				{
 					Message = "Overwatch initiated.",
 					Duration = 6,
