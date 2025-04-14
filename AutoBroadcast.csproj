@@ -8,17 +8,19 @@
 		<PlatformTarget>x64</PlatformTarget>
 	</PropertyGroup>
 
-
 	<ItemGroup>
-		<PackageReference Include="ExMod.Exiled" Version="9.2.1" />
-		<PackageReference Include="Lib.Harmony" Version="2.2.2" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="Assembly-CSharp-firstpass" HintPath="$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll" />
-		<Reference Include="Mirror" HintPath="$(EXILED_REFERENCES)\Mirror.dll" />
-		<Reference Include="UnityEngine.CoreModule" HintPath ="$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll" />
-		<Reference Include="UnityEngine.PhysicsModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll" />
+		<Reference Include="Assembly-CSharp" HintPath="$(SL_REFERENCES)\Assembly-CSharp.dll" />
+		<Reference Include="CommandSystem.Core" HintPath="$(SL_REFERENCES)\CommandSystem.Core.dll" />
+		<Reference Include="LabApi" HintPath="$(SL_REFERENCES)\LabApi.dll" />
+		<Reference Include="NorthwoodLib" HintPath="$(SL_REFERENCES)\NorthwoodLib.dll" />
+		<Reference Include="Assembly-CSharp-firstpass" HintPath="$(SL_REFERENCES)\Assembly-CSharp-firstpass.dll" />
+		<Reference Include="Pooling" HintPath="$(SL_REFERENCES)\Pooling.dll" />
+		<Reference Include="Mirror" HintPath="$(SL_REFERENCES)\Mirror.dll" />
+		<Reference Include="mscorlib" HintPath="$(SL_REFERENCES)\mscorlib.dll" />
+		<Reference Include="UnityEngine" HintPath="$(SL_REFERENCES)\UnityEngine.dll" />
+		<Reference Include="UnityEngine.CoreModule" HintPath="$(SL_REFERENCES)\UnityEngine.CoreModule.dll" />
+		<Reference Include="UnityEngine.PhysicsModule" HintPath="$(SL_REFERENCES)\UnityEngine.PhysicsModule.dll" />
+		<Reference Include="Unity.TextMeshPro" HintPath="$(SL_REFERENCES)\Unity.TextMeshPro.dll" />
 	</ItemGroup>
 
 </Project>
